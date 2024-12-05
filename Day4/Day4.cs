@@ -13,7 +13,7 @@ public class Day4 : Day
         var result = 0;
         for (var i = 0; i < rowLen; i++)
         {
-            for (var j = 0; colLen > j; j++)
+            for (var j = 0; j < colLen; j++)
             {
                 if (Input[i][j] == 'X')
                 {
@@ -90,7 +90,7 @@ public class Day4 : Day
     }
 
     private static bool IsInGrid((int row, int col) coord, int rowLen, int colLen) => 0 <= coord.row
-        && coord.row<rowLen
+        && coord.row < rowLen
         && 0 <= coord.col
-        && coord.col<colLen;
+        && coord.col < colLen;
 }
