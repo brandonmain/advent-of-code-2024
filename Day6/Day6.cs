@@ -7,22 +7,14 @@ public sealed class Day6 : Day
     public override void Run()
     {
         // Part 1
-        Coordinate? gaurdCoord = null;
-        var obstacleCount = 0;
-        for (int i = 0; i < Input.Length && gaurdCoord is null; i++)
+        var gaurdCoord = Input.SelectMany((x, i) => x.Select((y, j) =>
         {
-            for (int j = 0; j < Input[i].Length && gaurdCoord is null; j++)
+            if (y == '^')
             {
-                if (Input[i][j] == '^')
-                {
-                    gaurdCoord = new(i, j);
-                }
-                if (Input[i][j] == '#')
-                {
-                    obstacleCount++;
-                }
+                return new Coordinate(i, j);
             }
-        }
+            return null;
+        })).Single(x => x is not null);
 
         var rowLen = Input.Length;
         var colLen = Input[0].Length;
