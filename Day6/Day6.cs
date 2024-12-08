@@ -108,13 +108,13 @@ public sealed class Day6 : Day
         {
             if (input[gaurdCoord.Row][gaurdCoord.Col] == '#')
             {
+                if (!seenObstacle.Add((gaurdCoord, direction)))
+                {
+                    return true;
+                }
                 gaurdCoord = GetPrevCoordinate(gaurdCoord!, direction);
                 direction = GetNextDirection(direction);
-            }
-            else if (!seenObstacle.Add((gaurdCoord, direction)))
-            {
-                return true;
-            }
+            } 
             gaurdCoord = GetNextCoordinate(gaurdCoord!, direction);
         }
         return false;
