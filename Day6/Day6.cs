@@ -1,4 +1,5 @@
 ﻿using AoC_2024.Utilities;
+using static AoC_2024.Utilities.Utilities;
 
 namespace AoC_2024.Days;
 
@@ -64,24 +65,6 @@ public sealed class Day6 : Day
         Console.WriteLine(result);
     }
 
-    private static Coordinate GetNextCoordinate(Coordinate coord, Direction direction) => direction switch
-    {
-        Direction.Up => coord with { Row = coord.Row - 1 },
-        Direction.Down => coord with { Row = coord.Row  + 1 },
-        Direction.Left => coord with { Col = coord.Col - 1 },
-        Direction.Right => coord with { Col = coord.Col + 1 },
-        _ => throw new NotImplementedException(),
-    };
-
-    private static Coordinate GetPrevCoordinate(Coordinate coord, Direction direction) => direction switch
-    {
-        Direction.Up => coord with { Row = coord.Row + 1 },
-        Direction.Down => coord with { Row = coord.Row - 1 },
-        Direction.Left => coord with { Col = coord.Col + 1 },
-        Direction.Right => coord with { Col = coord.Col - 1 },
-        _ => throw new NotImplementedException(),
-    };
-
     private static Direction GetNextDirection(Direction direction) => direction switch
     {
         Direction.Up => Direction.Right,
@@ -90,8 +73,6 @@ public sealed class Day6 : Day
         Direction.Left => Direction.Up,
         _ => throw new NotImplementedException(),
     };
-
-    private static bool IsInGrid(Coordinate coord, int rowLen, int colLen) => 0 <= coord.Row && coord.Row < rowLen && 0 <= coord.Col && coord.Col < colLen;
 
     private static bool IsCycle(Coordinate gaurdCoord, Direction direction, int rowLen, int colLen, char[][] input)
     {
@@ -110,13 +91,5 @@ public sealed class Day6 : Day
             gaurdCoord = GetNextCoordinate(gaurdCoord!, direction);
         }
         return false;
-    }
-
-    private enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
     }
 }

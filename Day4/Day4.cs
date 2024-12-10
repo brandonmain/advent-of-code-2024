@@ -1,9 +1,10 @@
-﻿namespace AoC_2024.Days;
+﻿using AoC_2024.Utilities;
+using static AoC_2024.Utilities.Utilities;
+
+namespace AoC_2024.Days;
 
 public class Day4 : Day
 {
-    private static (int row, int col)[] Directions => [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 0), (0, 1), (1, -1), (1, 0), (1, 1)];
-    
     public override void Run()
     {
         var rowLen = Input.Length;
@@ -46,22 +47,22 @@ public class Day4 : Day
                 {
                     var leftDiagToFind = new HashSet<char>() { 'M', 'S' };
                     var rightDiagToFind = leftDiagToFind.ToHashSet();
-                    var bottomLeft = (row: i - 1, col: j - 1);
-                    var topRight = (row: i + 1, col: j + 1);
-                    
+                    var bottomLeft = GetNextCoordinate(coord: new(i, j), direction: Direction.BottomLeft);
+                    var topRight = GetNextCoordinate(coord: new(i, j), direction: Direction.TopRight);
+
                     // Check for bottom left to top right diag
                     if (IsInGrid(bottomLeft, rowLen, colLen)
-                        && leftDiagToFind.Remove(Input[bottomLeft.row][bottomLeft.col])
+                        && leftDiagToFind.Remove(Input[bottomLeft.Row][bottomLeft.Col])
                         && IsInGrid(topRight, rowLen, colLen)
-                        && leftDiagToFind.Remove(Input[topRight.row][topRight.col]))
+                        && leftDiagToFind.Remove(Input[topRight.Row][topRight.Col]))
                     {
-                        var bottomRight = (row: i - 1, col: j + 1);
-                        var topLeft = (row: i + 1, col: j - 1);
+                        var bottomRight = GetNextCoordinate(coord: new(i, j), direction: Direction.BottomRight);
+                        var topLeft = GetNextCoordinate(coord: new(i, j), direction: Direction.TopLeft);
                         // Check for bottom right to top left diag
                         if (IsInGrid(bottomRight, rowLen, colLen)
-                            && rightDiagToFind.Remove(Input[bottomRight.row][bottomRight.col])
+                            && rightDiagToFind.Remove(Input[bottomRight.Row][bottomRight.Col])
                             && IsInGrid(topLeft, rowLen, colLen)
-                            && rightDiagToFind.Remove(Input[topLeft.row][topLeft.col]))
+                            && rightDiagToFind.Remove(Input[topLeft.Row][topLeft.Col]))
                         {
                             result++;
                         }
@@ -73,24 +74,19 @@ public class Day4 : Day
         Console.WriteLine(result);
     }
 
-    private string BuildStringInDir(int row, int col, (int row, int col) dir, int rowLen, int colLen)
+    private string BuildStringInDir(int row, int col, Direction dir, int rowLen, int colLen)
     {
         var result = "X";
         for (var i = 0; i < 3; i++)
         {
-            var nextCoord = (row: row + dir.row, col: col + dir.col);
+            var nextCoord = GetNextCoordinate(coord: new(row, col), dir);
             if (IsInGrid(nextCoord, rowLen, colLen))
             {
-                result += Input[nextCoord.row][nextCoord.col];
+                result += Input[nextCoord.Row][nextCoord.Col];
             }
-            row = nextCoord.row;
-            col = nextCoord.col;
+            row = nextCoord.Row;
+            col = nextCoord.Col;
         }
         return result;
     }
-
-    private static bool IsInGrid((int row, int col) coord, int rowLen, int colLen) => 0 <= coord.row
-        && coord.row < rowLen
-        && 0 <= coord.col
-        && coord.col < colLen;
 }
